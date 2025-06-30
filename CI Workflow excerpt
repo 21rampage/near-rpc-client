@@ -1,0 +1,21 @@
+name: regen, test & release
+on:
+  push:    { paths: ["openapi/**"] }
+  schedule: [ { cron: "0 2 * * *" } ]
+  workflow_dispatch:
+
+jobs:
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with: node-version: 18
+      - run: npm ci
+      - run: npm run generate --workspaces
+      - run: npm test
+      - uses: google-github-actions/release-please-action@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          release-type: node
+          package-name: "@near-js/jsonrpc-client"
