@@ -1,0 +1,14 @@
+{
+  "name": "@near-js/jsonrpc-client",
+  "version": "0.1.0",
+  "scripts": {
+    "generate": "ts-node ../scripts/generate.ts",
+    "build": "tsc -b",
+    "test": "vitest run --coverage"
+  },
+  "dependencies": {
+    "@near-js/jsonrpc-types": "^0.1.0",
+    "cross-fetch": "^3",
+    "zod": "^3"
+  }
+}
