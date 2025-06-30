@@ -1,0 +1,18 @@
+import { setupServer } from "msw/node";
+import { rest } from "msw";
+import { NearRpcClient } from "../packages/jsonrpc-client";
+
+const server = setupServer(
+  rest.post("https://rpc.local/", (req, res, ctx) =>
+    res(ctx.json({ jsonrpc: "2.0", result: { block_height: 123 }, id: 1 }))
+  )
+);
+
+beforeAll(() => server.listen());
+afterAll(() => server.close());
+
+it("works against mocked RPC", async () => {
+  const client = new NearRpcClient("https://rpc.local/");
+  const res = await client.block({ finality: "final" });
+  expect(res.result.block_height).toEqual(123);
+});
